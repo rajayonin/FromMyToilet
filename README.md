@@ -54,6 +54,8 @@ _Note: I haven't tested this, so it might not work._
 
 ## Backup
 
+[`backup.py`](backup.py)
+
 Python script to backup the current (inside `Documents/`) subfolder to Onedrive, allowing for ignore patterns with Unix filename pattern matching, although it can be used for any folder.
 
 It requires Python 3.10+, and the [`hurry.filesize`](https://pypi.org/project/hurry.filesize/) module[^requirements].
