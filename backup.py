@@ -24,15 +24,20 @@ from hurry.filesize import si, iec
 
 # defaults: backup current folder inside Documents folder to Documents folder in OneDrive
 
-SOURCE_BACKUP_FOLDER = "Documents"
-ONEDRIVE_FOLDER = "OneDrive"
+SOURCE_BACKUP_FOLDER = f"C:\\Users\\{os.getlogin()}\\Documents"
+ONEDRIVE_FOLDER = f"C:\\Users\\{os.getlogin()}\\OneDrive"
 TARGET_BACKUP_FOLDER = "Documentos"
 
 # compute subdirectory from cwd
-relative_path = ''.join(difflib.restore([li for li in difflib.ndiff(os.getcwd(), f"C:\\Users\\{os.getlogin()}\\{SOURCE_BACKUP_FOLDER}\\") if li[0] != ' '], 1))
+if SOURCE_BACKUP_FOLDER not in os.getcwd():
+    print(f"You are not running this file inside {SOURCE_BACKUP_FOLDER}. Using defaults.")
+    relative_path = ''
 
-DEFAULT_SOURCE_DIR = f"C:\\Users\\{os.getlogin()}\\{SOURCE_BACKUP_FOLDER}\\{relative_path}\\"
-DEFAULT_TARGET_DIR = f"C:\\Users\\{os.getlogin()}\\{ONEDRIVE_FOLDER}\\{TARGET_BACKUP_FOLDER}\\{relative_path}\\"
+relative_path = ''.join(difflib.restore([li for li in difflib.ndiff(os.getcwd(), f"{SOURCE_BACKUP_FOLDER}\\") if li[0] != ' '], 1))
+
+
+DEFAULT_SOURCE_DIR = f"{SOURCE_BACKUP_FOLDER}\\{relative_path}\\"
+DEFAULT_TARGET_DIR = f"{ONEDRIVE_FOLDER}\\{TARGET_BACKUP_FOLDER}\\{relative_path}\\"
 
 DEFAULT_IGNORE_PATTERNS = ('__pycache__','venv*','.git*','.vscode', 'Mis *', 'Mi *')
 
