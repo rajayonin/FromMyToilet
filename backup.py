@@ -29,11 +29,11 @@ ONEDRIVE_FOLDER = f"C:\\Users\\{os.getlogin()}\\OneDrive"
 TARGET_BACKUP_FOLDER = "Documentos"
 
 # compute subdirectory from cwd
+relative_path = ''.join(difflib.restore([li for li in difflib.ndiff(os.getcwd(), f"{SOURCE_BACKUP_FOLDER}\\") if li[0] != ' '], 1))
+
 if SOURCE_BACKUP_FOLDER not in os.getcwd():
     print(f"You are not running this file inside {SOURCE_BACKUP_FOLDER}. Using defaults.")
     relative_path = ''
-
-relative_path = ''.join(difflib.restore([li for li in difflib.ndiff(os.getcwd(), f"{SOURCE_BACKUP_FOLDER}\\") if li[0] != ' '], 1))
 
 
 DEFAULT_SOURCE_DIR = f"{SOURCE_BACKUP_FOLDER}\\{relative_path}\\"
