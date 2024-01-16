@@ -84,6 +84,11 @@ parser.add_argument(
     default=DEFAULT_IGNORE_PATTERNS
 )
 
+parser.add_argument(
+    "-y",
+    help="Skip validation.",
+    action="store_true"
+)
 
 
 def in_pattern(string: str, patterns: Iterable[str]) -> bool:
@@ -139,24 +144,23 @@ if __name__ == "__main__":
     target_dir = args.target_dir
     ignore_patterns = args.ignore_patterns
 
+    if not args.y:
+        print("Counting files...", end='\r')
+    
+        count, size = count_files(source_dir, ignore_patterns)
+    
+        formatted_count = toHumanSize(count, system=si)
+        if count < 1000:  # delete last "B"
+            formatted_count = formatted_count[:-1]
+    
+        formatted_size = toHumanSize(size, system=iec)
+    
+        sys.stdout.write("\033[K")  # clear line
 
-    print("Counting files...", end='\r')
-
-    count, size = count_files(source_dir, ignore_patterns)
-
-    formatted_count = toHumanSize(count, system=si)
-    if count < 1000:  # delete last "B"
-        formatted_count = formatted_count[:-1]
-
-    formatted_size = toHumanSize(size, system=iec)
-
-    sys.stdout.write("\033[K")  # clear line
-
-
-    # prompt
-    choice = input(f"Copy from {source_dir} to {target_dir} ({formatted_count} files - {formatted_size}B)? [y/N]: ").lower()
-    if choice != "y":
-        exit()
+        # prompt
+        choice = input(f"Copy from {source_dir} to {target_dir} ({formatted_count} files - {formatted_size}B)? [y/N]: ").lower()
+        if choice != "y":
+            exit()
 
 
     if not os.path.exists(target_dir):
